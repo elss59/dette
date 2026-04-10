@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
+import csv
 import json
 from pathlib import Path
-from datetime import datetime, date
 
-SOURCE = Path('/data/dette.xlsx')
+SOURCE = Path('data/dette.csv')
 OUTPUT = Path('src/data/detteDataset.json')
-SHEET_NAME = 'Dette'
 
 FIELDS = [
     'produit',
@@ -25,41 +24,57 @@ FIELDS = [
     'titreVision',
 ]
 
+ALIASES = {
+    'produit': {'produit', 'product', 'univers'},
+    'parcours': {'parcours', 'journey'},
+    'impactExperientiel': {'impactexperientiel', 'impact_experientiel', 'impact expérientiel'},
+    'dateDette': {'datedette', 'date_dette', 'date'},
+    'figmaCible': {'figmacible', 'figma_cible'},
+    'descriptionCible': {'descriptioncible', 'description_cible'},
+    'figmaIntermediaire': {'figmaintermediaire', 'figma_intermediaire', 'figma intermédiaire'},
+    'descriptionIntermediaire': {'descriptionintermediaire', 'description_intermediaire', 'description intermédiaire'},
+    'videoProd': {'videoprod', 'video_prod', 'video production'},
+    'descriptionProd': {'descriptionprod', 'description_prod', 'description production'},
+    'raisonEcart': {'raisonecart', 'raison_ecart', "raison de l'écart"},
+    'impactUtilisateur': {'impactutilisateur', 'impact_utilisateur'},
+    'commentaire': {'commentaire', 'comment'},
+    'accesVision': {'accesvision', 'acces_vision', 'accès vision'},
+    'titreVision': {'titrevision', 'titre_vision'},
+}
 
-def normalize(v):
-    if v is None:
-        return ''
-    if isinstance(v, datetime):
-        return v.date().isoformat()
-    if isinstance(v, date):
-        return v.isoformat()
-    return str(v).strip()
+
+def norm_key(value: str) -> str:
+    return ''.join((value or '').strip().lower().split())
+
+
+def norm_val(value):
+    return (value or '').strip()
+
 
 rows = []
-
 if SOURCE.exists():
-    from openpyxl import load_workbook
+    with SOURCE.open('r', encoding='utf-8-sig', newline='') as f:
+        reader = csv.DictReader(f)
+        if reader.fieldnames is None:
+            raise SystemExit(f'CSV vide ou entêtes absents: {SOURCE}')
 
-    wb = load_workbook(SOURCE, data_only=True)
-    if SHEET_NAME not in wb.sheetnames:
-        raise SystemExit(f"Sheet '{SHEET_NAME}' introuvable dans {SOURCE}")
+        header_map = {norm_key(h): h for h in reader.fieldnames}
 
-    ws = wb[SHEET_NAME]
-    header = [normalize(c.value) for c in ws[1]]
-    idx = {name: i for i, name in enumerate(header)}
+        resolved = {}
+        for field in FIELDS:
+            candidates = {norm_key(field), *{norm_key(alias) for alias in ALIASES.get(field, set())}}
+            matched = next((header_map[c] for c in candidates if c in header_map), None)
+            if matched is None:
+                raise SystemExit(f'Colonne manquante dans {SOURCE}: {field}')
+            resolved[field] = matched
 
-    for expected in FIELDS:
-        if expected not in idx:
-            raise SystemExit(f"Colonne manquante dans la feuille '{SHEET_NAME}': {expected}")
-
-    for row in ws.iter_rows(min_row=2, values_only=True):
-        if row is None:
-            continue
-        obj = {field: normalize(row[idx[field]]) for field in FIELDS}
-        if any(obj.values()):
-            rows.append(obj)
+        for line in reader:
+            obj = {field: norm_val(line.get(source_col, '')) for field, source_col in resolved.items()}
+            if any(obj.values()):
+                rows.append(obj)
 else:
-    print(f"[WARN] Fichier source absent: {SOURCE}. Génération d'un dataset vide.")
+    print(f'[WARN] Fichier source absent: {SOURCE}. Génération d\'un dataset vide.')
 
+OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 OUTPUT.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-print(f"JSON généré: {OUTPUT} ({len(rows)} lignes)")
+print(f'JSON généré: {OUTPUT} ({len(rows)} lignes)')

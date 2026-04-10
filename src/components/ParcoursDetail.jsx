@@ -28,8 +28,8 @@ function DataSection({ title, linkLabel, link, description, dark = false }) {
 }
 
 function CasView({ entry }) {
-  const showIntermediaire = !isEmpty(entry.figmaIntermediaire) || !isEmpty(entry.descriptionIntermediaire);
-  const showVision = !isEmpty(entry.accesVision) || !isEmpty(entry.titreVision);
+  const showIntermediaire = !isEmpty(entry.figmaIntermediaire);
+  const showVision = !isEmpty(entry.accesVision) && !isEmpty(entry.titreVision);
 
   return (
     <>
@@ -47,7 +47,7 @@ function CasView({ entry }) {
 
         {showIntermediaire && (
           <DataSection
-            title="Intermédiaire"
+            title="Version intermédiaire"
             linkLabel="Figma intermédiaire"
             link={entry.figmaIntermediaire}
             description={entry.descriptionIntermediaire}
@@ -77,7 +77,7 @@ function CasView({ entry }) {
         <div className="dette-insight">
           <div>
             <p className="ds-bold titre-10 overline" style={{ color: 'var(--bleu_turquoise_dark)', marginBottom: 4 }}>
-              Vision
+              Pour aller plus loin
             </p>
             {!isEmpty(entry.titreVision) && <p className="titre-14" style={{ color: 'var(--bleu_turquoise_dark)' }}>{entry.titreVision}</p>}
             {!isEmpty(entry.accesVision) && (
