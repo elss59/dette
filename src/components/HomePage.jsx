@@ -1,5 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { PRODUCTS, getAllSuggestions, getParcoursForProduct, recentUpdates } from "../data/debtData";
+import {
+  PRODUCTS,
+  getAllSuggestions,
+  getParcoursForProduct,
+  getProductMetaByUnivers,
+  recentUpdates,
+} from "../data/debtData";
 
 /* ── Icônes produits ─────────────────────────────────────────────────────── */
 const PRODUCT_ICONS = {
@@ -13,7 +19,7 @@ const PRODUCT_ICONS = {
       <rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="18" r="1"/>
     </svg>
   ),
-  AFFILIATION: (
+  AFFILIATION_DISPENSE: (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
       <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
@@ -89,7 +95,7 @@ function SearchBlock({ onNavigate }) {
               <p className="dette-no-suggestion">Aucun résultat pour « {query} »</p>
             ) : (
               filtered.map((s) => {
-                const prod = PRODUCTS.find((p) => p.id === s.univers);
+                const prod = getProductMetaByUnivers(s.univers);
                 return (
                   <button
                     key={s.id}

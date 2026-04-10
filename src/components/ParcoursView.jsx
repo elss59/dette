@@ -40,8 +40,6 @@ export default function ParcoursView({ initialProduct, initialParcours, onGoHome
         />
         <ParcoursDetail
           item={selectedParcours}
-          allItems={parcoursList}
-          onNavigate={setSelectedParcours}
         />
       </div>
     </div>

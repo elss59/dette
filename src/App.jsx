@@ -11,7 +11,10 @@ export default function App() {
   const [initialParcours, setInitialParcours] = useState(null);
 
   const navigateToParcours = (productId, parcoursId) => {
-    setInitialProduct(productId);
+    const normalizedProduct = (productId === "AFFILIATION" || productId === "DISPENSE")
+      ? "AFFILIATION_DISPENSE"
+      : productId;
+    setInitialProduct(normalizedProduct);
     setInitialParcours(parcoursId ? getParcoursById(parcoursId) : null);
     setView("parcours");
   };

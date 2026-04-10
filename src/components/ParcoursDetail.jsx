@@ -95,18 +95,6 @@ function CasView({ cas }) {
 
   const cards = [
     {
-      icon: "🎯", label: "Intention initiale",
-      text: cas.intention_design,
-      bg: "var(--violet_pastel)", border: "rgba(85,20,199,0.15)",
-      labelColor: "var(--violet_dark)",
-    },
-    {
-      icon: "🔧", label: "Ce qui a été livré",
-      text: cas.livraison_production,
-      bg: "var(--gris_sable_pastel)", border: "var(--gris_light)",
-      labelColor: "var(--gris_dark)",
-    },
-    {
       icon: "⚡", label: "Nature de l'écart",
       text: cas.nature_ecart,
       bg: "var(--corail_pastel)", border: "rgba(226,37,12,0.15)",
@@ -122,16 +110,12 @@ function CasView({ cas }) {
 
   return (
     <>
-      {/* Comparaison Design vs Production */}
-      <p className="ds-bold titre-10 overline" style={{ color: "var(--gris_dark)", marginBottom: 12 }}>
-        Comparatif — Intention Design vs Réalité Production
-      </p>
       <div className="dette-comparison-grid">
         {/* Design */}
         <div className="dette-panel-design">
           <div className="dette-panel-header">
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--violet_dark)", flexShrink: 0 }} />
-            <span className="ds-bold titre-14" style={{ color: "var(--violet_dark)" }}>Intention Design</span>
+            <span className="ds-bold titre-14" style={{ color: "var(--violet_dark)" }}>Préconisation Design</span>
             <span className="titre-12" style={{ color: "var(--gris_dark)", marginLeft: "auto", opacity: 0.6 }}>Figma</span>
           </div>
           <MediaPlaceholder variant="design" />
@@ -146,7 +130,7 @@ function CasView({ cas }) {
         <div className="dette-panel-production">
           <div className="dette-panel-header-dark">
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(255,255,255,0.4)", flexShrink: 0 }} />
-            <span className="ds-bold titre-14 blanc">En Production</span>
+            <span className="ds-bold titre-14 blanc">Ce qui a été livré</span>
             <span className="titre-12" style={{ color: "rgba(255,255,255,0.4)", marginLeft: "auto" }}>Vidéo</span>
           </div>
           <MediaPlaceholder variant="production" />
@@ -158,36 +142,56 @@ function CasView({ cas }) {
         </div>
       </div>
 
-      {/* 4 cartes d'analyse */}
-      <p className="ds-bold titre-10 overline" style={{ color: "var(--gris_dark)", marginBottom: 12 }}>
+      {!isEmpty(cas.version_intermediaire) && (
+        <div className="dette-panel-intermediate">
+          <div className="dette-panel-header">
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--bleu_turquoise_dark)", flexShrink: 0 }} />
+            <span className="ds-bold titre-14" style={{ color: "var(--bleu_turquoise_dark)" }}>Version intermédiaire</span>
+            <span className="titre-12" style={{ color: "var(--gris_dark)", marginLeft: "auto", opacity: 0.6 }}>Figma</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", minHeight: 220 }}>
+            <MediaPlaceholder variant="design" />
+            <div className="dette-panel-description" style={{ color: "var(--bleu_dark)", background: "var(--blanc)", borderLeft: "1px solid var(--gris_light)" }}>
+              {cas.version_intermediaire}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <p className="ds-regular titre-16" style={{ color: "var(--gris_dark)", marginBottom: 12 }}>
         Analyse de la dette
       </p>
       <div className="dette-explain-grid">
-        {cards.map((c) => <ExplainCard key={c.label} {...c} />)}
+        {cards.map((c) => (
+          <ExplainCard
+            key={c.label}
+            {...(c.label === "Nature de l'écart" ? { ...c, label: "Raison de l'écart" } : c)}
+            {...(c.label === "Impact utilisateur" ? { bg: "var(--alerte_rouge_negatif_bg)" } : {})}
+          />
+        ))}
       </div>
 
-      {/* Insight */}
-      <div className="dette-insight">
-        <div style={{
-          width: 32, height: 32, borderRadius: 8,
-          background: "rgba(0,130,153,0.12)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0, marginTop: 2,
-        }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-            stroke="var(--bleu_turquoise_dark)" strokeWidth="2">
-            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+      <div className="dette-commentaire">
+        <p className="ds-bold titre-12" style={{ marginBottom: 6 }}>Commentaire</p>
+        {isEmpty(cas.commentaire)
+          ? <p className="titre-14 gris_dark" style={{ opacity: 0.5, fontStyle: "italic" }}>À renseigner…</p>
+          : <p className="titre-14 gris_dark">{cas.commentaire}</p>
+        }
+      </div>
+
+      <p className="ds-bold titre-16 noir" style={{ marginBottom: 12 }}>
+        Pour aller plus loin
+      </p>
+      <div className="dette-vision-card">
+        <div className="dette-vision-card-top">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <circle cx="12" cy="12" r="6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
           </svg>
         </div>
-        <div>
-          <p className="ds-bold titre-10 overline" style={{ color: "var(--bleu_turquoise_dark)", marginBottom: 4 }}>
-            Insight utilisateur
-          </p>
-          {isEmpty(cas.insight)
-            ? <p className="titre-14" style={{ color: "var(--bleu_turquoise_dark)", fontStyle: "italic", opacity: 0.55 }}>À renseigner…</p>
-            : <p className="titre-14" style={{ color: "var(--bleu_turquoise_dark)", lineHeight: 1.6 }}>{cas.insight}</p>
-          }
+        <div className="dette-vision-card-bottom">
+          {isEmpty(cas.vision_title) ? "Titre Vision" : cas.vision_title}
         </div>
+        <a href={cas.vision_url ?? "#"} className="dette-vision-overlay-link" target="_blank" rel="noreferrer" aria-label="Accès vision" />
       </div>
     </>
   );
@@ -218,7 +222,7 @@ function EmptyDetail() {
 }
 
 /* ── Composant principal ───────────────────────────────────────────────────── */
-export default function ParcoursDetail({ item, allItems, onNavigate }) {
+export default function ParcoursDetail({ item }) {
   const [activeCasIndex, setActiveCasIndex] = useState(0);
   const [lastItemId, setLastItemId] = useState(item?.id ?? null);
 
@@ -233,63 +237,26 @@ export default function ParcoursDetail({ item, allItems, onNavigate }) {
   const hasCasTabs = item.cas.length > 1;
   const activeCas  = item.cas[Math.min(activeCasIndex, item.cas.length - 1)];
 
-  const currentIndex = allItems.findIndex((i) => i.id === item.id);
-  const prevItem     = currentIndex > 0 ? allItems[currentIndex - 1] : null;
-  const nextItem     = currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : null;
-
   return (
     <div className="dette-detail">
       {/* Header du parcours */}
       <div className="dette-detail-header">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16 }}>
           <div style={{ flex: 1 }}>
-            <p className="ds-bold titre-18 noir" style={{ marginBottom: 4, lineHeight: 1.3 }}>
+            <p className="ds-bold noir" style={{ marginBottom: 4, lineHeight: 1.3, fontSize: 22 }}>
               {item.label}
             </p>
-            {item.cas.length > 1 && (
+            {item.cas.length <= 1 && (
               <p className="titre-12 gris_dark">
-                {item.cas.length} cas à documenter
+                1 use case
               </p>
             )}
           </div>
 
-          {/* Navigation séquentielle */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-            <button
-              onClick={() => prevItem && onNavigate(prevItem)}
-              disabled={!prevItem}
-              style={{
-                width: 30, height: 30, borderRadius: 6,
-                border: "1px solid var(--gris_light)",
-                background: "var(--blanc)",
-                cursor: prevItem ? "pointer" : "not-allowed",
-                opacity: prevItem ? 1 : 0.3,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-              title={prevItem?.label}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="var(--gris_dark)" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <span className="titre-12 gris_dark" style={{ padding: "0 4px", minWidth: 40, textAlign: "center" }}>
-              {currentIndex + 1}/{allItems.length}
+          <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <span className="titre-12 gris_dark">
+              {activeCas?.debt_date ? `Date dette : ${activeCas.debt_date}` : "Date dette à renseigner"}
             </span>
-            <button
-              onClick={() => nextItem && onNavigate(nextItem)}
-              disabled={!nextItem}
-              style={{
-                width: 30, height: 30, borderRadius: 6,
-                border: "1px solid var(--gris_light)",
-                background: "var(--blanc)",
-                cursor: nextItem ? "pointer" : "not-allowed",
-                opacity: nextItem ? 1 : 0.3,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}
-              title={nextItem?.label}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="var(--gris_dark)" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
           </div>
         </div>
       </div>
@@ -298,7 +265,11 @@ export default function ParcoursDetail({ item, allItems, onNavigate }) {
       <div className="dette-detail-body scrollbar-thin">
         {/* Sélecteur de cas */}
         {hasCasTabs && (
-          <div className="dette-cas-tabs">
+          <div className="dette-cas-tabs-wrap">
+            <p className="titre-12 gris_dark" style={{ margin: 0 }}>
+              {item.cas.length} use case
+            </p>
+            <div className="dette-cas-tabs">
             {item.cas.map((cas, i) => (
               <button
                 key={i}
@@ -308,6 +279,7 @@ export default function ParcoursDetail({ item, allItems, onNavigate }) {
                 {cas.label}
               </button>
             ))}
+            </div>
           </div>
         )}
 

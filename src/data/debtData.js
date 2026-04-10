@@ -2,19 +2,23 @@
 export const PRODUCTS = [
   { id: "ECP",         label: "Espace Client Particulier", short: "ECP",         active: true },
   { id: "APP",         label: "Application Mobile",        short: "APP",         active: true },
-  { id: "AFFILIATION", label: "Affiliation",               short: "Affiliation", active: true },
-  { id: "DISPENSE",    label: "Dispense",                  short: "Dispense",    active: true },
+  { id: "AFFILIATION_DISPENSE", label: "Affiliation & Dispense", short: "Affiliation & Dispense", active: true },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const emptyCas = (label) => ({
   label,
   intention_design:   "",
+  version_intermediaire: "",
   livraison_production: "",
   nature_ecart:       "",
   impact_ux:          "",
-  insight:            "",
+  commentaire:        "",
+  vision_title:       "",
+  vision_url:         null,
+  debt_date:          "",
   figma_url:          null,
+  figma_inter_url:    null,
   production_video:   null,
 });
 
@@ -87,12 +91,15 @@ export const recentUpdates = [
 
 // ─── Accesseurs ───────────────────────────────────────────────────────────────
 export function getParcoursForProduct(productId) {
+  if (productId === "AFFILIATION_DISPENSE") {
+    return parcoursData.filter((p) => p.univers === "AFFILIATION" || p.univers === "DISPENSE");
+  }
   return parcoursData.filter((p) => p.univers === productId);
 }
 
 export function getAllSuggestions() {
   return parcoursData.map((p) => {
-    const prod = PRODUCTS.find((pr) => pr.id === p.univers);
+    const prod = getProductMetaByUnivers(p.univers);
     return {
       id:              p.id,
       univers:         p.univers,
@@ -104,4 +111,11 @@ export function getAllSuggestions() {
 
 export function getParcoursById(id) {
   return parcoursData.find((p) => p.id === id) ?? null;
+}
+
+export function getProductMetaByUnivers(univers) {
+  if (univers === "AFFILIATION" || univers === "DISPENSE") {
+    return PRODUCTS.find((pr) => pr.id === "AFFILIATION_DISPENSE");
+  }
+  return PRODUCTS.find((pr) => pr.id === univers);
 }
