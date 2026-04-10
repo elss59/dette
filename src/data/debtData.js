@@ -1,91 +1,87 @@
-// ─── Produits ─────────────────────────────────────────────────────────────────
-export const PRODUCTS = [
-  { id: "ECP",         label: "Espace Client Particulier", short: "ECP",         active: true },
-  { id: "APP",         label: "Application Mobile",        short: "APP",         active: true },
-  { id: "AFFILIATION", label: "Affiliation",               short: "Affiliation", active: true },
-  { id: "DISPENSE",    label: "Dispense",                  short: "Dispense",    active: true },
+import detteRows from './detteDataset.json';
+
+const normalize = (value, fallback = '') => (typeof value === 'string' ? value.trim() : value) || fallback;
+const hasValue = (value) => typeof value === 'string' ? value.trim().length > 0 : Boolean(value);
+
+const productOrder = ['ECP', 'APP', 'AFFILIATION', 'DISPENSE'];
+const shortLabelMap = {
+  ECP: 'ECP',
+  APP: 'APP',
+  AFFILIATION: 'Affiliation',
+  DISPENSE: 'Dispense',
+};
+
+const uniqueProducts = Array.from(
+  new Set(
+    detteRows
+      .map((row) => normalize(row.produit))
+      .filter(Boolean),
+  ),
+);
+
+const sortedProducts = [
+  ...uniqueProducts.filter((p) => productOrder.includes(p)).sort((a, b) => productOrder.indexOf(a) - productOrder.indexOf(b)),
+  ...uniqueProducts.filter((p) => !productOrder.includes(p)).sort((a, b) => a.localeCompare(b)),
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-const emptyCas = (label) => ({
-  label,
-  intention_design:   "",
-  livraison_production: "",
-  nature_ecart:       "",
-  impact_ux:          "",
-  insight:            "",
-  figma_url:          null,
-  production_video:   null,
-});
-
-/** Crée un parcours vide avec ses cas. Si aucun casLabels fourni → un seul cas sans label. */
-const makeParcours = (id, univers, label, casLabels = []) => ({
+export const PRODUCTS = sortedProducts.map((id) => ({
   id,
-  univers,
-  label,
-  cas: casLabels.length > 0
-    ? casLabels.map(emptyCas)
-    : [emptyCas(null)],
-});
+  label: id,
+  short: shortLabelMap[id] ?? id,
+  active: true,
+}));
 
-// ─── Données de parcours ──────────────────────────────────────────────────────
-export const parcoursData = [
-  // ── ECP ──────────────────────────────────────────────────────────────────────
-  makeParcours("ecp-001", "ECP", "Création de compte et Onboarding",        ["Cas OD", "Cas AD"]),
-  makeParcours("ecp-002", "ECP", "Demander un remboursement",               ["Cas nominal", "Cas anticipation de rejet"]),
-  makeParcours("ecp-003", "ECP", "Suivre un remboursement",                 ["Cas remboursement fait", "Cas remboursement rejeté"]),
-  makeParcours("ecp-004", "ECP", "Envoyer un devis",                        ["Cas nominal", "Cas devis dentaire en ligne"]),
-  makeParcours("ecp-005", "ECP", "Comprendre mon contrat"),
-  makeParcours("ecp-006", "ECP", "Visualiser mes infos personnelles"),
-  makeParcours("ecp-007", "ECP", "Accéder à ma carte de tiers payant"),
-  makeParcours("ecp-008", "ECP", "Faire évoluer ma couverture"),
-  makeParcours("ecp-009", "ECP", "Cas divers",                              ["Dispensé", "Radié"]),
-  makeParcours("ecp-010", "ECP", "Portabilité",                             ["Ouverture", "Renouvellement"]),
-  makeParcours("ecp-011", "ECP", "MH m'accompagne"),
+const grouped = new Map();
+for (const row of detteRows) {
+  const productId = normalize(row.produit);
+  const parcoursLabel = normalize(row.parcours);
+  if (!productId || !parcoursLabel) continue;
 
-  // ── APP ──────────────────────────────────────────────────────────────────────
-  makeParcours("app-001", "APP", "Création de compte et Onboarding",        ["Cas OD", "Cas AD"]),
-  makeParcours("app-002", "APP", "Demander un remboursement",               ["Cas nominal", "Cas anticipation de rejet"]),
-  makeParcours("app-003", "APP", "Suivre un remboursement",                 ["Cas remboursement fait", "Cas remboursement rejeté"]),
-  makeParcours("app-004", "APP", "Envoyer un devis",                        ["Cas nominal", "Cas devis dentaire en ligne"]),
-  makeParcours("app-005", "APP", "Comprendre mon contrat"),
-  makeParcours("app-006", "APP", "Visualiser mes infos personnelles"),
-  makeParcours("app-007", "APP", "Accéder à ma carte de tiers payant"),
-  makeParcours("app-008", "APP", "Prendre RDV avec un médecin",             ["1ère fois", "Reprendre RDV"]),
-  makeParcours("app-009", "APP", "MH m'accompagne"),
+  const key = `${productId}::${parcoursLabel}`;
+  if (!grouped.has(key)) {
+    grouped.set(key, {
+      id: `${productId.toLowerCase()}-${grouped.size + 1}`,
+      univers: productId,
+      label: parcoursLabel,
+      entries: [],
+    });
+  }
 
-  // ── AFFILIATION ──────────────────────────────────────────────────────────────
-  makeParcours("aff-001", "AFFILIATION", "Je fais mon affiliation"),
-  makeParcours("aff-002", "AFFILIATION", "Je fais ma réaffiliation"),
+  const entry = {
+    produit: productId,
+    parcours: parcoursLabel,
+    impactExperientiel: normalize(row.impactExperientiel),
+    dateDette: normalize(row.dateDette),
+    figmaCible: normalize(row.figmaCible),
+    descriptionCible: normalize(row.descriptionCible),
+    figmaIntermediaire: normalize(row.figmaIntermediaire),
+    descriptionIntermediaire: normalize(row.descriptionIntermediaire),
+    videoProd: normalize(row.videoProd),
+    descriptionProd: normalize(row.descriptionProd),
+    raisonEcart: normalize(row.raisonEcart),
+    impactUtilisateur: normalize(row.impactUtilisateur),
+    commentaire: normalize(row.commentaire),
+    accesVision: normalize(row.accesVision),
+    titreVision: normalize(row.titreVision),
+  };
 
-  // ── DISPENSE ─────────────────────────────────────────────────────────────────
-  makeParcours("dis-001", "DISPENSE", "Je demande une dispense"),
-  makeParcours("dis-002", "DISPENSE", "Je renouvelle ma dispense"),
-];
+  grouped.get(key).entries.push(entry);
+}
 
-// ─── Dernières mises à jour (exemples fictifs) ────────────────────────────────
-export const recentUpdates = [
-  {
-    date:        "28 mars 2025",
-    product:     "ECP",
-    parcours:    "Demander un remboursement",
-    description: "Comparaison ajoutée pour le cas nominal — maquettes v2.3 vs production. Écart documenté sur le formulaire de saisie et le retour de confirmation.",
-  },
-  {
-    date:        "21 mars 2025",
-    product:     "APP",
-    parcours:    "Accéder à ma carte de tiers payant",
-    description: "Vidéo production ajoutée. Écart majeur identifié : le QR code dynamique prévu a été remplacé par un PDF statique non lisible en conditions réelles.",
-  },
-  {
-    date:        "14 mars 2025",
-    product:     "Affiliation",
-    parcours:    "Je fais mon affiliation",
-    description: "Premier parcours d'affiliation analysé. Intention design capturée, lien Figma ajouté. Livraison production en attente de validation.",
-  },
-];
+export const parcoursData = Array.from(grouped.values());
 
-// ─── Accesseurs ───────────────────────────────────────────────────────────────
+export const recentUpdates = detteRows
+  .filter((row) => hasValue(row.dateDette))
+  .slice()
+  .sort((a, b) => normalize(b.dateDette).localeCompare(normalize(a.dateDette)))
+  .slice(0, 3)
+  .map((row) => ({
+    date: normalize(row.dateDette),
+    product: normalize(row.produit),
+    parcours: normalize(row.parcours),
+    description: normalize(row.commentaire) || normalize(row.raisonEcart) || 'Mise à jour du parcours.',
+  }));
+
 export function getParcoursForProduct(productId) {
   return parcoursData.filter((p) => p.univers === productId);
 }
@@ -94,9 +90,9 @@ export function getAllSuggestions() {
   return parcoursData.map((p) => {
     const prod = PRODUCTS.find((pr) => pr.id === p.univers);
     return {
-      id:              p.id,
-      univers:         p.univers,
-      label:           p.label,
+      id: p.id,
+      univers: p.univers,
+      label: p.label,
       suggestionLabel: `${prod?.short ?? p.univers} — ${p.label}`,
     };
   });
