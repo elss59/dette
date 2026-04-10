@@ -1,6 +1,18 @@
 import { groupByParcours } from "../data/debtData";
 import { PriorityBadge, TypeBadge } from "./Badges";
 
+const PRIORITY_FILTERS = ["", "P1", "P2"];
+const TYPE_FILTERS = ["", "UX", "Fonctionnelle", "Tech"];
+
+function chipClass(active, key) {
+  if (!active) return "dette-chip";
+  if (key === "P1") return "dette-chip active-p1";
+  if (key === "UX") return "dette-chip active-ux";
+  if (key === "Fonctionnelle") return "dette-chip active-fonctionnelle";
+  if (key === "Tech") return "dette-chip active-tech";
+  return "dette-chip active";
+}
+
 export default function FeatureList({ items, selected, onSelect, filter, onFilterChange }) {
   const filtered = items.filter((item) => {
     if (filter.priority && item.priority !== filter.priority) return false;
@@ -19,52 +31,47 @@ export default function FeatureList({ items, selected, onSelect, filter, onFilte
   const grouped = groupByParcours(filtered);
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Filters */}
-      <div className="px-4 py-3 border-b border-slate-200 bg-white flex-shrink-0 space-y-2">
-        <input
-          type="text"
-          placeholder="Rechercher une feature…"
-          value={filter.search}
-          onChange={(e) => onFilterChange({ ...filter, search: e.target.value })}
-          className="w-full text-sm px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-300"
-        />
-        <div className="flex gap-1.5">
-          {["", "P1", "P2"].map((p) => (
+    <div className="flex flex-col h-full overflow-hidden">
+      {/* Filter bar */}
+      <div
+        className="flex-shrink-0"
+        style={{ padding: '10px 12px 10px', borderBottom: '1px solid var(--gris_light)', background: 'var(--blanc)' }}
+      >
+        {/* Search */}
+        <div style={{ position: 'relative', marginBottom: 8 }}>
+          <svg
+            style={{ position: 'absolute', left: 9, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+            width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gris_dark)" strokeWidth="2"
+          >
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Rechercher une feature…"
+            value={filter.search}
+            onChange={(e) => onFilterChange({ ...filter, search: e.target.value })}
+            className="dette-search"
+          />
+        </div>
+
+        {/* Priority filters */}
+        <div className="flex gap-1 flex-wrap">
+          {PRIORITY_FILTERS.map((p) => (
             <button
-              key={p}
+              key={`p-${p}`}
               onClick={() => onFilterChange({ ...filter, priority: p })}
-              className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${
-                filter.priority === p
-                  ? p === "P1"
-                    ? "bg-red-100 text-red-700 border-red-300"
-                    : p === "P2"
-                    ? "bg-amber-100 text-amber-700 border-amber-300"
-                    : "bg-indigo-100 text-indigo-700 border-indigo-300"
-                  : "bg-white text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700"
-              }`}
+              className={chipClass(filter.priority === p, p)}
             >
-              {p === "" ? "Tous" : p}
+              {p === "" ? "Toutes priorités" : p}
             </button>
           ))}
-          <div className="h-5 w-px bg-slate-200 self-center mx-0.5" />
-          {["", "UX", "Fonctionnelle", "Tech"].map((t) => (
+          {TYPE_FILTERS.filter(t => t !== "").map((t) => (
             <button
-              key={t}
-              onClick={() => onFilterChange({ ...filter, type: t })}
-              className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-colors ${
-                filter.type === t && t !== ""
-                  ? t === "UX"
-                    ? "bg-violet-100 text-violet-700 border-violet-300"
-                    : t === "Fonctionnelle"
-                    ? "bg-blue-100 text-blue-700 border-blue-300"
-                    : "bg-slate-200 text-slate-700 border-slate-300"
-                  : filter.type === t && t === ""
-                  ? "bg-indigo-100 text-indigo-700 border-indigo-300"
-                  : "bg-white text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700"
-              }`}
+              key={`t-${t}`}
+              onClick={() => onFilterChange({ ...filter, type: filter.type === t ? "" : t })}
+              className={chipClass(filter.type === t, t)}
             >
-              {t === "" ? "Tous" : t}
+              {t}
             </button>
           ))}
         </div>
@@ -73,44 +80,60 @@ export default function FeatureList({ items, selected, onSelect, filter, onFilte
       {/* List */}
       <div className="flex-1 overflow-y-auto scrollbar-thin">
         {Object.keys(grouped).length === 0 ? (
-          <div className="p-8 text-center text-sm text-slate-400">
-            Aucun élément ne correspond aux filtres sélectionnés.
+          <div style={{ padding: '32px 16px', textAlign: 'center' }}>
+            <p className="gris_dark titre-14">Aucun élément ne correspond aux filtres.</p>
           </div>
         ) : (
-          Object.entries(grouped).map(([parcours, parcourItems]) => (
+          Object.entries(grouped).map(([parcours, parcoursItems]) => (
             <div key={parcours}>
-              {/* Parcours header */}
-              <div className="sticky top-0 px-4 py-2 bg-slate-100 border-b border-t border-slate-200 z-10">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              {/* Parcours heading */}
+              <div className="dette-parcours-heading">
+                <span className="gris_dark overline titre-10 ds-bold">
                   {parcours}
                 </span>
-                <span className="ml-2 text-xs text-slate-400">{parcourItems.length}</span>
+                <span className="gris_dark titre-10" style={{ marginLeft: 6 }}>
+                  {parcoursItems.length}
+                </span>
               </div>
 
-              {/* Feature items */}
-              {parcourItems.map((item) => {
+              {/* Feature rows */}
+              {parcoursItems.map((item) => {
                 const isSelected = selected?.id === item.id;
                 return (
                   <button
                     key={item.id}
                     onClick={() => onSelect(item)}
-                    className={`
-                      w-full text-left px-4 py-3 border-b border-slate-100 transition-all duration-100
-                      ${isSelected
-                        ? "bg-indigo-50 border-l-2 border-l-indigo-500"
-                        : "bg-white hover:bg-slate-50 border-l-2 border-l-transparent"
-                      }
-                    `}
+                    className={`dette-feature-item${isSelected ? " active" : ""}`}
                   >
-                    <div className="flex items-start justify-between gap-2 mb-1.5">
-                      <span className={`text-sm font-medium leading-snug ${isSelected ? "text-indigo-900" : "text-slate-800"}`}>
+                    {/* Top row: name + priority */}
+                    <div className="flex items-start justify-between gap-2" style={{ marginBottom: 6 }}>
+                      <span
+                        className={isSelected ? "ds-bold titre-14" : "titre-14"}
+                        style={{
+                          color: isSelected ? 'var(--corail_mh_dark)' : 'var(--noir)',
+                          lineHeight: 1.35,
+                        }}
+                      >
                         {item.feature}
                       </span>
                       <PriorityBadge priority={item.priority} />
                     </div>
-                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-1.5">
+
+                    {/* Impact summary */}
+                    <p
+                      className="titre-12 gris_dark"
+                      style={{
+                        marginBottom: 8,
+                        lineHeight: 1.5,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
                       {item.impact}
                     </p>
+
                     <TypeBadge type={item.type_dette} />
                   </button>
                 );
@@ -121,8 +144,11 @@ export default function FeatureList({ items, selected, onSelect, filter, onFilte
       </div>
 
       {/* Footer count */}
-      <div className="px-4 py-2 border-t border-slate-200 bg-white flex-shrink-0">
-        <span className="text-xs text-slate-400">
+      <div
+        className="flex-shrink-0 flex items-center"
+        style={{ padding: '6px 16px', borderTop: '1px solid var(--gris_light)', background: 'var(--blanc)' }}
+      >
+        <span className="gris_dark titre-12">
           {filtered.length} élément{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}
         </span>
       </div>

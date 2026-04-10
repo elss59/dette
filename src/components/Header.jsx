@@ -1,33 +1,47 @@
 export default function Header() {
   return (
-    <header className="bg-slate-900 border-b border-slate-800 flex-shrink-0">
-      <div className="flex items-center justify-between px-6 h-14">
+    <header className="dette-header">
+      <div className="flex items-center justify-between px-6 w-full">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-indigo-500 flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <rect x="2" y="2" width="5" height="5" rx="1" fill="white" opacity="0.9"/>
-                <rect x="9" y="2" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
-                <rect x="2" y="9" width="5" height="5" rx="1" fill="white" opacity="0.6"/>
-                <rect x="9" y="9" width="5" height="5" rx="1" fill="white" opacity="0.3"/>
-              </svg>
-            </div>
-            <span className="text-white font-semibold text-sm tracking-tight">
-              Malakoff Humanis
-            </span>
-          </div>
-          <span className="text-slate-600 text-sm">/</span>
-          <span className="text-slate-300 text-sm font-medium">Dette Expérientielle</span>
+          <img
+            src="/assets/logos/logo-nom-blanc.svg"
+            alt="Malakoff Humanis"
+            height="28"
+            style={{ height: 28, width: 'auto' }}
+          />
+          <span className="blanc" style={{ opacity: 0.3, fontSize: '1rem', lineHeight: 1 }}>|</span>
+          <span className="blanc titre-14" style={{ opacity: 0.75 }}>
+            Dette Expérientielle
+          </span>
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
-            Prototype · v1.0
+        <div className="flex items-center gap-2">
+          <span
+            className="titre-12"
+            style={{
+              color: 'rgba(255,255,255,0.45)',
+              background: 'rgba(255,255,255,0.07)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: '2rem',
+              padding: '3px 10px',
+            }}
+          >
+            Prototype v1.0
           </span>
-          <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center">
-            <span className="text-white text-xs font-semibold">MH</span>
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: '50%',
+              background: 'var(--corail_mh_brand)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span className="blanc ds-bold" style={{ fontSize: '0.6875rem' }}>MH</span>
           </div>
         </div>
       </div>

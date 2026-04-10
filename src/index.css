@@ -1,55 +1,333 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* ── 1. Design System Malakoff Humanis ──────────────────────────────────── */
+@import "ds-bootstrap/src/css/ds-bootstrap.css";
 
-@tailwind base;
+/* ── 2. Tailwind utilities (layout only, no preflight to avoid DS conflicts) */
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    box-sizing: border-box;
-  }
-  html, body, #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    text-align: left;
-    border: none;
-  }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    background: #f8fafc;
-    color: #0f172a;
-  }
-  h1, h2, h3, h4 {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: inherit;
-    margin: 0;
-    letter-spacing: inherit;
-    font-size: inherit;
-    color: inherit;
-  }
-  p { margin: 0; }
+/* ── 3. App shell overrides ──────────────────────────────────────────────── */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+  border: none;
+  min-height: unset;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
-@layer components {
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e1 transparent;
-  }
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 5px;
-  }
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 3px;
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background-color: #94a3b8;
-  }
+body {
+  background-color: var(--gris_background);
+  color: var(--noir);
+}
+
+/* ── 4. Scrollbar utilities ──────────────────────────────────────────────── */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gris_light) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--gris_light);
+  border-radius: 2px;
+}
+
+/* ── 5. Dette app custom classes ─────────────────────────────────────────── */
+
+/* Header */
+.dette-header {
+  background-color: var(--bleu_dark);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Product nav tabs */
+.dette-product-nav {
+  background-color: var(--bleu_dark);
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Feature list panel */
+.dette-panel-left {
+  width: 340px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--gris_light);
+  background-color: var(--blanc);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Stats bar */
+.dette-stats {
+  border-bottom: 1px solid var(--gris_light);
+  padding: 10px 16px;
+  background-color: var(--blanc);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+/* Parcours heading in sidebar */
+.dette-parcours-heading {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--gris_background);
+  border-top: 1px solid var(--gris_light);
+  border-bottom: 1px solid var(--gris_light);
+  padding: 6px 16px;
+}
+
+/* Feature item in sidebar */
+.dette-feature-item {
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid var(--gris_light);
+  border-left: 3px solid transparent;
+  background-color: var(--blanc);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
+  display: block;
+}
+.dette-feature-item:hover {
+  background-color: var(--gris_sable_pastel);
+}
+.dette-feature-item.active {
+  background-color: var(--corail_pastel);
+  border-left-color: var(--corail_mh_brand);
+}
+
+/* Priority badges */
+.badge-p1 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "poppins-bold", Arial, sans-serif;
+  font-size: 0.6875rem;
+  padding: 2px 8px;
+  border-radius: 1rem;
+  background-color: var(--alerte_rouge_negatif);
+  color: var(--rouge_negatif);
+  border: 1px solid rgba(204, 0, 0, 0.25);
+  white-space: nowrap;
+}
+.badge-p1::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--rouge_negatif);
+  flex-shrink: 0;
+}
+
+.badge-p2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "poppins-bold", Arial, sans-serif;
+  font-size: 0.6875rem;
+  padding: 2px 8px;
+  border-radius: 1rem;
+  background-color: var(--corail_pastel);
+  color: var(--corail_mh_dark);
+  border: 1px solid rgba(226, 37, 12, 0.2);
+  white-space: nowrap;
+}
+.badge-p2::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--corail_mh_brand);
+  flex-shrink: 0;
+}
+
+/* Type badges */
+.badge-type {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  padding: 2px 8px;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.badge-type-ux {
+  background-color: var(--violet_pastel);
+  color: var(--violet_dark);
+  border-color: rgba(85, 20, 199, 0.2);
+}
+.badge-type-fonctionnelle {
+  background-color: var(--bleu_turquoise_pastel);
+  color: var(--bleu_turquoise_dark);
+  border-color: rgba(0, 99, 116, 0.2);
+}
+.badge-type-tech {
+  background-color: var(--gris_sable_light);
+  color: var(--gris_dark);
+  border-color: var(--gris_light);
+}
+
+/* Filter chip buttons */
+.dette-chip {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 1rem;
+  border: 1px solid var(--gris_light);
+  background-color: var(--blanc);
+  color: var(--gris_dark);
+  cursor: pointer;
+  transition: all 0.12s ease;
+  font-family: "poppins-regular", Arial, sans-serif;
+}
+.dette-chip:hover {
+  border-color: var(--corail_mh_brand);
+  color: var(--corail_mh_brand);
+}
+.dette-chip.active {
+  background-color: var(--corail_mh_brand);
+  color: var(--blanc);
+  border-color: var(--corail_mh_brand);
+  font-family: "poppins-bold", Arial, sans-serif;
+}
+.dette-chip.active-p1 {
+  background-color: var(--rouge_negatif);
+  color: var(--blanc);
+  border-color: var(--rouge_negatif);
+}
+.dette-chip.active-ux {
+  background-color: var(--violet_dark);
+  color: var(--blanc);
+  border-color: var(--violet_dark);
+}
+.dette-chip.active-fonctionnelle {
+  background-color: var(--bleu_turquoise_dark);
+  color: var(--blanc);
+  border-color: var(--bleu_turquoise_dark);
+}
+.dette-chip.active-tech {
+  background-color: var(--gris_dark);
+  color: var(--blanc);
+  border-color: var(--gris_dark);
+}
+
+/* Search input */
+.dette-search {
+  width: 100%;
+  border: 1px solid var(--gris_light);
+  border-radius: 0.5rem;
+  padding: 7px 12px 7px 32px;
+  font-size: 0.875rem;
+  font-family: "poppins-regular", Arial, sans-serif;
+  background-color: var(--gris_background);
+  color: var(--noir);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.dette-search:focus {
+  border-color: var(--corail_mh_brand);
+  background-color: var(--blanc);
+  box-shadow: 0 0 0 3px rgba(226, 37, 12, 0.1);
+}
+.dette-search::placeholder {
+  color: var(--gris_dark);
+  opacity: 0.7;
+}
+
+/* Comparison panels */
+.dette-panel-design {
+  background-color: var(--violet_pastel);
+  border-radius: 12px;
+  border: 1px solid rgba(85, 20, 199, 0.15);
+}
+.dette-panel-production {
+  background-color: var(--bleu_dark);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Media placeholder */
+.dette-media-placeholder {
+  border-radius: 8px;
+  border: 2px dashed;
+  aspect-ratio: 16/9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.dette-media-placeholder-design {
+  border-color: rgba(85, 20, 199, 0.3);
+  background-color: rgba(238, 231, 249, 0.6);
+}
+.dette-media-placeholder-production {
+  border-color: rgba(255,255,255,0.15);
+  background-color: rgba(255,255,255,0.04);
+}
+
+/* Explain cards */
+.dette-explain-card {
+  border-radius: 10px;
+  border: 1px solid;
+  padding: 14px;
+}
+
+/* Gap bar */
+.dette-gap-track {
+  flex: 1;
+  height: 6px;
+  background-color: var(--gris_light);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.dette-gap-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.7s ease;
+}
+
+/* Insight callout */
+.dette-insight {
+  background-color: var(--bleu_turquoise_pastel);
+  border: 1px solid rgba(0, 130, 153, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Product tab overrides for dark background */
+.dette-product-nav .tabs3 .tab3 button:not(.selected) {
+  background-color: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.55);
+  box-shadow: none;
+}
+.dette-product-nav .tabs3 .tab3 button:not(.selected):hover {
+  color: var(--blanc);
+  background-color: rgba(255,255,255,0.15);
+}
+.dette-product-nav .tabs3 .tab3 button.selected {
+  background: var(--corail_mh_brand);
+  color: var(--blanc);
+}
+.dette-product-nav .tabs3 .tab3 button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
