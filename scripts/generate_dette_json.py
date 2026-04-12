@@ -2,6 +2,7 @@
 import csv
 import json
 from pathlib import Path
+import unicodedata
 
 SOURCE = Path('data/dette.csv')
 OUTPUT = Path('src/data/detteDataset.json')
@@ -44,7 +45,9 @@ ALIASES = {
 
 
 def norm_key(value: str) -> str:
-    return ''.join((value or '').strip().lower().split())
+    text = unicodedata.normalize('NFKD', (value or ''))
+    text = ''.join(ch for ch in text if not unicodedata.combining(ch))
+    return ''.join(ch for ch in text.strip().lower() if ch.isalnum())
 
 
 def norm_val(value):
@@ -54,7 +57,15 @@ def norm_val(value):
 rows = []
 if SOURCE.exists():
     with SOURCE.open('r', encoding='utf-8-sig', newline='') as f:
-        reader = csv.DictReader(f)
+        sample = f.read(4096)
+        f.seek(0)
+        try:
+            dialect = csv.Sniffer().sniff(sample, delimiters=';,|\t')
+        except csv.Error:
+            dialect = csv.excel
+            dialect.delimiter = ';' if ';' in sample and ',' not in sample else ','
+
+        reader = csv.DictReader(f, dialect=dialect)
         if reader.fieldnames is None:
             raise SystemExit(f'CSV vide ou entêtes absents: {SOURCE}')
 
@@ -73,7 +84,7 @@ if SOURCE.exists():
             if any(obj.values()):
                 rows.append(obj)
 else:
-    print(f'[WARN] Fichier source absent: {SOURCE}. Génération d\'un dataset vide.')
+    print(f"[WARN] Fichier source absent: {SOURCE.resolve()} (cwd={Path.cwd()}). Génération d'un dataset vide.")
 
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 OUTPUT.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
