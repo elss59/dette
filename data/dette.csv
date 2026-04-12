@@ -1,0 +1,22 @@
+﻿Produit;Parcours;Impact expérientiel;Date dette;Lien Figma cible;"Explain ""Version cible""
+Explique la préco, principe exp";Lien Figma inter;"Explain ""Version intermédiaire""
+Explique le compromis";Lien vidéo prod;"Explain écart prod
+Explique la réalité de la livraison";Raison de l'écart;"Impact user
+Explique les impacts pour l'utilisateur";Commentaire raison de l'écart;Accès Vision;Titre Vision
+ECP;Je fais évoluer ma couverture;3;mars-26;https://www.figma.com/proto/8DaddjOZKKlsASeNBkuD1t/Maquettes--Ma-couverture-ECP-?node-id=228-34521&t=vg9iPkdJOSaZa0ar-1&scaling=min-zoom&content-scaling=fixed&page-id=228%3A2&starting-point-node-id=228%3A38067;"Donner des clés de lecture à l'assuré en lui permettant : 
+-de comparer les garanties les plus consommés par l'assurée avec les autres options possible
+-de comparer ses dépenses actuelles avec les autres options
+-de simuler ses futures dépenses et les comparer
+-digitaliser les tableaux de garanties pour aider à les comparer
+
+Comprendre les besoins motivant le changement de formule de l'assurée pour lui adapter notre réponse";https://www.figma.com/proto/8DaddjOZKKlsASeNBkuD1t/Maquettes--Ma-couverture-ECP-?node-id=606-45172&t=ceAzuCrGeSKTZvOd-1&scaling=scale-down&content-scaling=fixed&page-id=228%3A56129&starting-point-node-id=606%3A44197;"Alternative répondant aux contraintes Pleiade : 
+-proposant une vue en ""Menu"" des offres 
+-des exemples de remboursements statique";;;Budget;Difficulté à comparer les formules et choisir la formule la plus adaptée;"Contrainte technique venant de Pleaide sur l'affichage des options, des exemples de remboursement
+
+Contrainte budgétaire pour l'usage de la dataviz de la synthèse
+
+Contrainte métier pour proposer un simulateur car réflexion en cours autour de cet outil";;
+ECP;Comprendre mon contrat;2;sept-25; ;;;;;;;;;;
+ECP;Création de compte et onboarding;3;juin-24;https://www.figma.com/board/Pi0DlvbhpshCu5L9XsYLsv/Parcours-Flow--CIAM--CONNEXION-SECURITE-?node-id=1102-959&t=MBgBsciHbpF4Ir2h-4;Proposer une création de compte fluide via une cohérence graphique/ergonomique dans l'ensemble du parcours + norme accessbilité;;;https://www.figma.com/board/Pi0DlvbhpshCu5L9XsYLsv/Parcours-Flow--CIAM--CONNEXION-SECURITE-?node-id=1102-13264&t=MBgBsciHbpF4Ir2h-4;"La récolte du numéro de téléphone a été intégré en dehors de la création de compte lors de l'arrivée dans l'Espace après l'onboarding 
+L'onboarding n'a pas été revu depuis 2023";Budget;Une expérience décousue, longue et un accueil tout pourri;L’utilisateur a déjà fourni plusieurs informations pour créer son compte et pense avoir terminé. Être à nouveau interrompu pour fournir une nouvelle donnée (le téléphone) juste après l’onboarding génère une frustration : impression de parcours sans fin, perte de confiance, sentiment d'incohérence.;;
+ECP;Accéder à ma carte de tiers payant;2;mars-25;https://www.figma.com/board/EKGDXLCjqOTWbkWeL7KQwE/Parcours-Flow--Profil-ECP-?node-id=4259-18192&t=WOjg1315l4Q7AVsV-4;Sélection de la carte de tiers payant a afficher en fonction des bénéficiares y étant attachés et refresh de la page;https://www.figma.com/board/EKGDXLCjqOTWbkWeL7KQwE/Parcours-Flow--Profil-ECP-?node-id=4476-19993&t=WOjg1315l4Q7AVsV-4;Alternative gardant la sélection de la carte pour les mineurs affichant un message expliquant qu'il faut vérifier sur celle de l'OD;https://b1envenue.sharepoint.com/:v:/r/sites/Designclients/Documents%20partages/02_Interne/Dette%20exp%C3%A9rientielle/Vid%C3%A9os%20prod/ECP/Carte%20TP.mp4?csf=1&web=1&e=bDmCfH;Affichage d'une carte de TP pour les mineurs bientôt disponible (et qui ne le sera jamais);Budget;Un accès à la carte de TP complexe pour les enfants mineurs qui n'ont pas de carte de TP propre;Contrainte technique venant côté du partenaire carte de TP qui ne remonte pas lors de l'appel les bénéficiares associés à la carte de TP;;
