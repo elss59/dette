@@ -1,91 +1,183 @@
-// ─── Produits ─────────────────────────────────────────────────────────────────
+import generatedRows from "./dette.generated.json";
+
 export const PRODUCTS = [
-  { id: "ECP",         label: "Espace Client Particulier", short: "ECP",         active: true },
-  { id: "APP",         label: "Application Mobile",        short: "APP",         active: true },
-  { id: "AFFILIATION", label: "Affiliation",               short: "Affiliation", active: true },
-  { id: "DISPENSE",    label: "Dispense",                  short: "Dispense",    active: true },
+  { id: "ECP", label: "Espace Client Particulier", short: "ECP", active: true },
+  { id: "APP", label: "Application Mobile", short: "APP", active: true },
+  {
+    id: "AFFILIATION_DISPENSE",
+    label: "Affiliation & dispense",
+    short: "Affiliation & dispense",
+    active: false,
+  },
 ];
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-const emptyCas = (label) => ({
-  label,
-  intention_design:   "",
-  livraison_production: "",
-  nature_ecart:       "",
-  impact_ux:          "",
-  insight:            "",
-  figma_url:          null,
-  production_video:   null,
-});
-
-/** Crée un parcours vide avec ses cas. Si aucun casLabels fourni → un seul cas sans label. */
-const makeParcours = (id, univers, label, casLabels = []) => ({
-  id,
-  univers,
-  label,
-  cas: casLabels.length > 0
-    ? casLabels.map(emptyCas)
-    : [emptyCas(null)],
-});
-
-// ─── Données de parcours ──────────────────────────────────────────────────────
-export const parcoursData = [
-  // ── ECP ──────────────────────────────────────────────────────────────────────
-  makeParcours("ecp-001", "ECP", "Création de compte et Onboarding",        ["Cas OD", "Cas AD"]),
-  makeParcours("ecp-002", "ECP", "Demander un remboursement",               ["Cas nominal", "Cas anticipation de rejet"]),
-  makeParcours("ecp-003", "ECP", "Suivre un remboursement",                 ["Cas remboursement fait", "Cas remboursement rejeté"]),
-  makeParcours("ecp-004", "ECP", "Envoyer un devis",                        ["Cas nominal", "Cas devis dentaire en ligne"]),
-  makeParcours("ecp-005", "ECP", "Comprendre mon contrat"),
-  makeParcours("ecp-006", "ECP", "Visualiser mes infos personnelles"),
-  makeParcours("ecp-007", "ECP", "Accéder à ma carte de tiers payant"),
-  makeParcours("ecp-008", "ECP", "Faire évoluer ma couverture"),
-  makeParcours("ecp-009", "ECP", "Cas divers",                              ["Dispensé", "Radié"]),
-  makeParcours("ecp-010", "ECP", "Portabilité",                             ["Ouverture", "Renouvellement"]),
-  makeParcours("ecp-011", "ECP", "MH m'accompagne"),
-
-  // ── APP ──────────────────────────────────────────────────────────────────────
-  makeParcours("app-001", "APP", "Création de compte et Onboarding",        ["Cas OD", "Cas AD"]),
-  makeParcours("app-002", "APP", "Demander un remboursement",               ["Cas nominal", "Cas anticipation de rejet"]),
-  makeParcours("app-003", "APP", "Suivre un remboursement",                 ["Cas remboursement fait", "Cas remboursement rejeté"]),
-  makeParcours("app-004", "APP", "Envoyer un devis",                        ["Cas nominal", "Cas devis dentaire en ligne"]),
-  makeParcours("app-005", "APP", "Comprendre mon contrat"),
-  makeParcours("app-006", "APP", "Visualiser mes infos personnelles"),
-  makeParcours("app-007", "APP", "Accéder à ma carte de tiers payant"),
-  makeParcours("app-008", "APP", "Prendre RDV avec un médecin",             ["1ère fois", "Reprendre RDV"]),
-  makeParcours("app-009", "APP", "MH m'accompagne"),
-
-  // ── AFFILIATION ──────────────────────────────────────────────────────────────
-  makeParcours("aff-001", "AFFILIATION", "Je fais mon affiliation"),
-  makeParcours("aff-002", "AFFILIATION", "Je fais ma réaffiliation"),
-
-  // ── DISPENSE ─────────────────────────────────────────────────────────────────
-  makeParcours("dis-001", "DISPENSE", "Je demande une dispense"),
-  makeParcours("dis-002", "DISPENSE", "Je renouvelle ma dispense"),
+const fallbackRows = [
+  {
+    produit: "ECP",
+    parcours: "Création de compte et Onboarding",
+    impactExperientiel: "OD",
+    dateDette: "12/03/2026",
+    figmaCible: "https://figma.com/design",
+    descriptionCible: "Parcours fluide avec onboarding guidé.",
+    figmaIntermediaire: "https://figma.com/inter",
+    descriptionIntermediaire: "Simplification partielle du flow.",
+    videoProd: "video.mp4",
+    descriptionProd: "Flow fragmenté avec rupture login.",
+    raisonEcart: "Contraintes SI et délais projet.",
+    impactUtilisateur: "Perte de conversion + incompréhension.",
+    commentaire: "Sujet critique à reprendre en V2.",
+    accesVision: "https://figma.com/vision",
+    titreVision: "Vision onboarding cible",
+  },
+  {
+    produit: "ECP",
+    parcours: "Création de compte et Onboarding",
+    impactExperientiel: "AD",
+    dateDette: "12/03/2026",
+    figmaCible: "https://figma.com/design-ad",
+    descriptionCible: "Parcours AD avec préremplissage des étapes clés.",
+    figmaIntermediaire: "",
+    descriptionIntermediaire: "",
+    videoProd: "https://example.com/video-ad",
+    descriptionProd: "Parcours AD livré sans reprise contextuelle.",
+    raisonEcart: "Arbitrage planning en fin de sprint.",
+    impactUtilisateur: "Risque d'abandon sur étape justificatif.",
+    commentaire: "Prioriser une correction incrémentale en sprint prochain.",
+    accesVision: "https://figma.com/vision-ad",
+    titreVision: "Vision AD cible",
+  },
+  {
+    produit: "APP",
+    parcours: "Demander un remboursement",
+    impactExperientiel: "OD",
+    dateDette: "04/03/2026",
+    figmaCible: "https://figma.com/remboursement",
+    descriptionCible: "Tunnel simplifié en 3 étapes.",
+    figmaIntermediaire: "",
+    descriptionIntermediaire: "",
+    videoProd: "https://example.com/remboursement-prod",
+    descriptionProd: "Étape de confirmation absente en production.",
+    raisonEcart: "Dépendance API non stabilisée.",
+    impactUtilisateur: "Incertitude sur la bonne prise en compte.",
+    commentaire: "Inclure un état de succès explicite.",
+    accesVision: "",
+    titreVision: "",
+  },
+  {
+    produit: "Affiliation",
+    parcours: "Affiliation",
+    impactExperientiel: "OD",
+    dateDette: "18/02/2026",
+    figmaCible: "",
+    descriptionCible: "",
+    figmaIntermediaire: "",
+    descriptionIntermediaire: "",
+    videoProd: "",
+    descriptionProd: "",
+    raisonEcart: "",
+    impactUtilisateur: "",
+    commentaire: "",
+    accesVision: "",
+    titreVision: "",
+  },
+  {
+    produit: "Dispense",
+    parcours: "Dispense",
+    impactExperientiel: "AD",
+    dateDette: "18/02/2026",
+    figmaCible: "",
+    descriptionCible: "",
+    figmaIntermediaire: "",
+    descriptionIntermediaire: "",
+    videoProd: "",
+    descriptionProd: "",
+    raisonEcart: "",
+    impactUtilisateur: "",
+    commentaire: "",
+    accesVision: "",
+    titreVision: "",
+  },
 ];
 
-// ─── Dernières mises à jour (exemples fictifs) ────────────────────────────────
+const sourceRows = generatedRows.length > 0 ? generatedRows : fallbackRows;
+
+const normalizeProduct = (rawProduct = "") => {
+  const value = String(rawProduct).trim().toUpperCase();
+  if (value === "AFFILIATION" || value === "DISPENSE") return "AFFILIATION_DISPENSE";
+  return value;
+};
+
+const normalizeParcoursLabel = (rawParcours = "") => {
+  const value = String(rawParcours).trim();
+  if (["Affiliation", "Dispense"].includes(value)) return "Affiliation & dispense";
+  return value || "Parcours non renseigné";
+};
+
+const deriveCaseLabel = (impactExperientiel = "") => {
+  const upper = String(impactExperientiel).trim().toUpperCase();
+  if (upper === "OD") return "Cas OD";
+  if (upper === "AD") return "Cas AD";
+  return upper ? `Cas ${upper}` : null;
+};
+
+const buildParcoursData = (rows) => {
+  const grouped = new Map();
+
+  rows.forEach((row, index) => {
+    const univers = normalizeProduct(row.produit);
+    const label = normalizeParcoursLabel(row.parcours);
+    const key = `${univers}::${label}`;
+
+    const cas = {
+      id: `${key}::${index}`,
+      label: deriveCaseLabel(row.impactExperientiel),
+      impactExperientiel: row.impactExperientiel ?? "",
+      dateDette: row.dateDette ?? "",
+      figmaCible: row.figmaCible ?? "",
+      descriptionCible: row.descriptionCible ?? "",
+      figmaIntermediaire: row.figmaIntermediaire ?? "",
+      descriptionIntermediaire: row.descriptionIntermediaire ?? "",
+      videoProd: row.videoProd ?? "",
+      descriptionProd: row.descriptionProd ?? "",
+      raisonEcart: row.raisonEcart ?? "",
+      impactUtilisateur: row.impactUtilisateur ?? "",
+      commentaire: row.commentaire ?? "",
+      accesVision: row.accesVision ?? "",
+      titreVision: row.titreVision ?? "",
+    };
+
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        id: `parcours-${grouped.size + 1}`,
+        univers,
+        label,
+        cas: [cas],
+      });
+    } else {
+      grouped.get(key).cas.push(cas);
+    }
+  });
+
+  return [...grouped.values()];
+};
+
+export const parcoursData = buildParcoursData(sourceRows);
+
 export const recentUpdates = [
   {
-    date:        "28 mars 2025",
-    product:     "ECP",
-    parcours:    "Demander un remboursement",
-    description: "Comparaison ajoutée pour le cas nominal — maquettes v2.3 vs production. Écart documenté sur le formulaire de saisie et le retour de confirmation.",
+    date: "12 avril 2026",
+    product: "ECP",
+    parcours: "Création de compte et Onboarding",
+    description: "Maquettes cibles et réalisation production mises à jour avec analyse de dette.",
   },
   {
-    date:        "21 mars 2025",
-    product:     "APP",
-    parcours:    "Accéder à ma carte de tiers payant",
-    description: "Vidéo production ajoutée. Écart majeur identifié : le QR code dynamique prévu a été remplacé par un PDF statique non lisible en conditions réelles.",
-  },
-  {
-    date:        "14 mars 2025",
-    product:     "Affiliation",
-    parcours:    "Je fais mon affiliation",
-    description: "Premier parcours d'affiliation analysé. Intention design capturée, lien Figma ajouté. Livraison production en attente de validation.",
+    date: "9 avril 2026",
+    product: "APP",
+    parcours: "Demander un remboursement",
+    description: "Impact utilisateur consolidé avec commentaire d'arbitrage projet.",
   },
 ];
 
-// ─── Accesseurs ───────────────────────────────────────────────────────────────
 export function getParcoursForProduct(productId) {
   return parcoursData.filter((p) => p.univers === productId);
 }
@@ -94,9 +186,9 @@ export function getAllSuggestions() {
   return parcoursData.map((p) => {
     const prod = PRODUCTS.find((pr) => pr.id === p.univers);
     return {
-      id:              p.id,
-      univers:         p.univers,
-      label:           p.label,
+      id: p.id,
+      univers: p.univers,
+      label: p.label,
       suggestionLabel: `${prod?.short ?? p.univers} — ${p.label}`,
     };
   });
