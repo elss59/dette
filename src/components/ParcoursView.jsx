@@ -2,7 +2,6 @@ import { useState } from "react";
 import ProductTabs from "./ProductTabs";
 import ParcoursList from "./ParcoursList";
 import ParcoursDetail from "./ParcoursDetail";
-import { getParcoursForProduct } from "../data/debtData";
 
 export default function ParcoursView({ initialProduct, initialParcours, onGoHome }) {
   const [selectedProduct,  setSelectedProduct]  = useState(initialProduct ?? "ECP");
@@ -13,7 +12,6 @@ export default function ParcoursView({ initialProduct, initialParcours, onGoHome
     setSelectedParcours(null);
   };
 
-  const parcoursList = getParcoursForProduct(selectedProduct);
 
   return (
     <div className="dette-parcours-view">
@@ -39,9 +37,8 @@ export default function ParcoursView({ initialProduct, initialParcours, onGoHome
           onSelect={setSelectedParcours}
         />
         <ParcoursDetail
+          key={selectedParcours?.id ?? "empty"}
           item={selectedParcours}
-          allItems={parcoursList}
-          onNavigate={setSelectedParcours}
         />
       </div>
     </div>

@@ -6,8 +6,10 @@ export default function ProductTabs({ selected, onSelect }) {
       {PRODUCTS.map((product) => (
         <button
           key={product.id}
-          className={`dette-nav-tab${selected === product.id ? " active" : ""}`}
-          onClick={() => onSelect(product.id)}
+          className={`dette-nav-tab${selected === product.id ? " active" : ""}${!product.active ? " is-disabled" : ""}`}
+          onClick={() => product.active && onSelect(product.id)}
+          disabled={!product.active}
+          title={!product.active ? "Produit en préparation" : undefined}
         >
           {product.short}
         </button>
