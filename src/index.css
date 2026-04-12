@@ -647,3 +647,139 @@ body {
   background: var(--gris_light);
   margin: 24px 0;
 }
+
+/* ── Ajustements dette v2 ───────────────────────────────────────────────── */
+.dette-nav-tab.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dette-detail-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dette-date-pill {
+  font-family: "poppins-regular", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--gris_dark);
+  border: 1px solid var(--gris_light);
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: var(--gris_background);
+}
+
+.dette-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dette-main-block {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dette-main-block.is-production {
+  border-color: rgba(26, 40, 62, 0.15);
+}
+
+.dette-main-block.is-intermediate {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  align-items: start;
+  gap: 20px;
+}
+
+.dette-main-block-visual {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.dette-main-block-description {
+  margin: 0;
+  font-family: "poppins-regular", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--noir);
+}
+
+.dette-resource-link {
+  color: var(--corail_mh_brand);
+  font-family: "poppins-bold", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.dette-resource-link:hover { text-decoration: underline; }
+
+.dette-resource-empty {
+  color: var(--gris_dark);
+  font-size: 0.8125rem;
+}
+
+.dette-analysis-section {
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.dette-explain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dette-explain-card {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.dette-explain-card-label {
+  margin: 0 0 6px;
+  font-family: "poppins-bold", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  color: var(--bleu_dark);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.dette-alert-card {
+  background: var(--alerte_rouge_negatif_bg, #ffe5e5);
+  border-color: rgba(226, 37, 12, 0.2);
+}
+
+.dette-comment-full {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.vision-card {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+@media (max-width: 1024px) {
+  .dette-comparison-grid,
+  .dette-explain-grid,
+  .dette-main-block.is-intermediate {
+    grid-template-columns: 1fr;
+  }
+}

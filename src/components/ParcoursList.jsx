@@ -21,7 +21,6 @@ export default function ParcoursList({ productId, selected, onSelect }) {
       <div className="flex-1 overflow-y-auto scrollbar-thin">
         {items.map((item) => {
           const isActive = selected?.id === item.id;
-          const hasCas   = item.cas.length > 1 || (item.cas.length === 1 && item.cas[0].label !== null);
           return (
             <button
               key={item.id}

@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm run data:build && vite",
+    "build": "npm run data:build && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "data:build": "python3 scripts/convert_dette_xlsx.py"
   },
   "dependencies": {
     "clsx": "^2.1.1",
