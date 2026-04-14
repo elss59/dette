@@ -647,3 +647,292 @@ body {
   background: var(--gris_light);
   margin: 24px 0;
 }
+
+/* ── Ajustements dette v2 ───────────────────────────────────────────────── */
+.dette-nav-tab.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dette-detail-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dette-date-pill {
+  font-family: "poppins-regular", Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  color: var(--gris_dark);
+  border: 1px solid var(--gris_light);
+  border-radius: 999px;
+  padding: 3px 10px;
+  background: var(--gris_background);
+}
+
+.dette-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dette-main-block {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dette-main-block.is-production {
+  border-color: rgba(26, 40, 62, 0.15);
+}
+
+.dette-main-block.is-intermediate {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2fr;
+  align-items: start;
+  gap: 20px;
+}
+
+.dette-main-block-visual {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.dette-main-block-description {
+  margin: 0;
+  font-family: "poppins-regular", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--noir);
+}
+
+.dette-resource-link {
+  color: var(--corail_mh_brand);
+  font-family: "poppins-bold", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.dette-resource-link:hover { text-decoration: underline; }
+
+.dette-resource-empty {
+  color: var(--gris_dark);
+  font-size: 0.8125rem;
+}
+
+.dette-analysis-section {
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.dette-explain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dette-explain-card {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.dette-explain-card-label {
+  margin: 0 0 6px;
+  font-family: "poppins-bold", Arial, Helvetica, sans-serif;
+  font-size: 0.875rem;
+  color: var(--bleu_dark);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.dette-alert-card {
+  background: var(--alerte_rouge_negatif_bg, #ffe5e5);
+  border-color: rgba(226, 37, 12, 0.2);
+}
+
+.dette-comment-full {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.vision-card {
+  background: var(--blanc);
+  border: 1px solid var(--gris_light);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+@media (max-width: 1024px) {
+  .dette-comparison-grid,
+  .dette-explain-grid,
+  .dette-main-block.is-intermediate {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Home + Modal refresh (maquette) ────────────────────────────────────── */
+.dette-app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.dette-home {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+  background: linear-gradient(222deg, #ffe5d9 11.07%, var(--blanc) 57.02%);
+  overflow-y: auto;
+}
+
+.dette-home-inner {
+  display: flex;
+  width: min(1440px, 100%);
+  min-width: 1280px;
+  max-width: 1440px;
+  min-height: 1080px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding: 0;
+}
+
+.dette-search-block,
+.dette-browse-block {
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 24px 32px;
+  border-radius: 0;
+  background: var(--rose_chair_light_bg, #fbe9e6);
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.dette-browse-block {
+  padding: 24px;
+  gap: 16px;
+}
+
+.dette-home-updates {
+  background: var(--blanc);
+  box-shadow: 0 3px 6px 0 rgba(34, 34, 34, 0.3);
+  width: 960px;
+  padding: 32px;
+}
+
+.dette-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 31, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 24px;
+}
+
+.dette-modal-panel {
+  width: 960px;
+  max-width: 100%;
+  max-height: calc(100vh - 48px);
+  border-radius: 0;
+  background: var(--blanc);
+  box-shadow: 0 3px 6px 0 rgba(34, 34, 34, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dette-modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--gris_light);
+  background: var(--blanc);
+}
+
+.dette-modal-close {
+  border: 1px solid var(--gris_light);
+  background: var(--blanc);
+  border-radius: 999px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.dette-modal-content {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.dette-modal-hint {
+  margin: 0 0 12px;
+  font-size: 0.875rem;
+  color: var(--gris_dark);
+}
+
+.dette-parcours-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.dette-parcours-modal-item {
+  width: 100%;
+  border: 1px solid var(--gris_light);
+  background: var(--blanc);
+  padding: 14px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.dette-parcours-modal-item:hover {
+  border-color: var(--corail_mh_brand);
+}
+
+.dette-modal-detail .dette-detail {
+  background: var(--blanc);
+}
+
+.dette-modal-detail .dette-detail-header {
+  border-bottom: 1px solid var(--gris_light);
+}
+
+@media (max-width: 1320px) {
+  .dette-home-inner {
+    min-width: 100%;
+    padding: 0 16px;
+  }
+
+  .dette-home-updates,
+  .dette-modal-panel {
+    width: 100%;
+  }
+
+  .dette-parcours-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}

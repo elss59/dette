@@ -5,33 +5,31 @@ import ParcoursView from "./components/ParcoursView";
 import { getParcoursById } from "./data/debtData";
 
 export default function App() {
-  // "home" | "parcours"
-  const [view, setView]                   = useState("home");
-  const [initialProduct,  setInitialProduct]  = useState("ECP");
+  const [isParcoursModalOpen, setIsParcoursModalOpen] = useState(false);
+  const [initialProduct, setInitialProduct] = useState("ECP");
   const [initialParcours, setInitialParcours] = useState(null);
 
   const navigateToParcours = (productId, parcoursId) => {
     setInitialProduct(productId);
     setInitialParcours(parcoursId ? getParcoursById(parcoursId) : null);
-    setView("parcours");
+    setIsParcoursModalOpen(true);
   };
 
-  const goHome = () => {
-    setView("home");
+  const closeParcoursModal = () => {
+    setIsParcoursModalOpen(false);
     setInitialParcours(null);
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
-      <Header onLogoClick={goHome} />
+    <div className="dette-app-shell">
+      <Header onLogoClick={closeParcoursModal} />
+      <HomePage onNavigate={navigateToParcours} />
 
-      {view === "home" ? (
-        <HomePage onNavigate={navigateToParcours} />
-      ) : (
+      {isParcoursModalOpen && (
         <ParcoursView
           initialProduct={initialProduct}
           initialParcours={initialParcours}
-          onGoHome={goHome}
+          onClose={closeParcoursModal}
         />
       )}
     </div>
