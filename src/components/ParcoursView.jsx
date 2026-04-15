@@ -1,35 +1,26 @@
 import { useState } from "react";
-import ProductTabs from "./ProductTabs";
 import ParcoursList from "./ParcoursList";
 import ParcoursDetail from "./ParcoursDetail";
+import { PRODUCTS } from "../data/debtData";
 
 export default function ParcoursView({ initialProduct, initialParcours, onGoHome }) {
-  const [selectedProduct,  setSelectedProduct]  = useState(initialProduct ?? "ECP");
+  const [selectedProduct]  = useState(initialProduct ?? "ECP");
   const [selectedParcours, setSelectedParcours] = useState(initialParcours ?? null);
-
-  const handleProductChange = (productId) => {
-    setSelectedProduct(productId);
-    setSelectedParcours(null);
-  };
-
+  const selectedProductMeta = PRODUCTS.find((product) => product.id === selectedProduct);
 
   return (
     <div className="dette-parcours-view">
-      {/* Barre de retour */}
-      <div className="dette-back-bar">
+      <div className="dette-modal-topbar">
         <button className="dette-back-link" onClick={onGoHome}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 5l-7 7 7 7"/>
-          </svg>
-          Accueil
+          {/* TODO(asset): remplacer par /assets/icons/fleche-gauche.svg dès disponibilité. */}
+          <span className="dette-icon-fallback" aria-hidden>←</span>
+          Retour
         </button>
+        <p className="ds-bold titre-16 noir" style={{ margin: 0 }}>
+          {selectedProductMeta?.label ?? selectedProduct}
+        </p>
       </div>
 
-      {/* Tabs produits */}
-      <ProductTabs selected={selectedProduct} onSelect={handleProductChange} />
-
-      {/* Corps */}
       <div className="dette-view-body">
         <ParcoursList
           productId={selectedProduct}

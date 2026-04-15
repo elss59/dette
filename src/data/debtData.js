@@ -28,6 +28,7 @@ const fallbackRows = [
     commentaire: "Sujet critique à reprendre en V2.",
     accesVision: "https://figma.com/vision",
     titreVision: "Vision onboarding cible",
+    topImage: "",
   },
   {
     produit: "ECP",
@@ -45,6 +46,7 @@ const fallbackRows = [
     commentaire: "Prioriser une correction incrémentale en sprint prochain.",
     accesVision: "https://figma.com/vision-ad",
     titreVision: "Vision AD cible",
+    topImage: "",
   },
   {
     produit: "APP",
@@ -62,6 +64,7 @@ const fallbackRows = [
     commentaire: "Inclure un état de succès explicite.",
     accesVision: "",
     titreVision: "",
+    topImage: "",
   },
   {
     produit: "Affiliation",
@@ -79,6 +82,7 @@ const fallbackRows = [
     commentaire: "",
     accesVision: "",
     titreVision: "",
+    topImage: "",
   },
   {
     produit: "Dispense",
@@ -96,6 +100,7 @@ const fallbackRows = [
     commentaire: "",
     accesVision: "",
     titreVision: "",
+    topImage: "",
   },
 ];
 
@@ -144,6 +149,7 @@ const buildParcoursData = (rows) => {
       commentaire: row.commentaire ?? "",
       accesVision: row.accesVision ?? "",
       titreVision: row.titreVision ?? "",
+      topImage: row.topImage ?? "",
     };
 
     if (!grouped.has(key)) {

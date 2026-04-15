@@ -24,15 +24,22 @@ export default function ParcoursList({ productId, selected, onSelect }) {
           return (
             <button
               key={item.id}
-              className={`dette-sidebar-item${isActive ? " active" : ""}`}
+              className={`dette-sidebar-item dette-parcours-modal-item${isActive ? " active" : ""}`}
               onClick={() => onSelect(item)}
             >
-              <span style={{ lineHeight: 1.4 }}>{item.label}</span>
-              {item.cas.length > 1 && (
-                <span className="dette-sidebar-cas-count">
-                  {item.cas.length} cas
-                </span>
-              )}
+              <span className="dette-parcours-modal-item-text">
+                <span className="dette-parcours-modal-item-title">{item.label}</span>
+                <span className="dette-parcours-modal-item-link">Voir le détail</span>
+              </span>
+              <span className="dette-parcours-modal-item-right">
+                {item.cas.length > 1 && (
+                  <span className="dette-sidebar-cas-count">
+                    {item.cas.length} cas
+                  </span>
+                )}
+                {/* TODO(asset): remplacer par /assets/icons/chevron-droit.svg dès disponibilité. */}
+                <span className="dette-icon-fallback" aria-hidden>›</span>
+              </span>
             </button>
           );
         })}

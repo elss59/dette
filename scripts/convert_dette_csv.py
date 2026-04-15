@@ -24,6 +24,7 @@ TARGET_KEYS = [
     "commentaire",
     "accesVision",
     "titreVision",
+    "topImage",
 ]
 
 EXACT_MAPPING = {
@@ -38,6 +39,7 @@ EXACT_MAPPING = {
     "commentaire raison de l'ecart": "commentaire",
     "acces vision": "accesVision",
     "titre vision": "titreVision",
+    "top image": "topImage",
 }
 
 PREFIX_MAPPING = [
